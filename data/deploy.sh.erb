@@ -1,7 +1,7 @@
 <%
-  prepare = commands(:default).map { |s| "(\n\n#{indent 2, s}\n\n)" }.join(" && ")
-  launch  = commands(:launch).map  { |s| "(\n\n#{indent 2, s}\n\n)" }.join(" && ")
-  clean   = commands(:clean).map   { |s| "(\n\n#{indent 2, s}\n\n)" }.join(" && ")
+  prepare = commands(:default).map { |s| "(\n\n#{s}\n\n)" }.join(" && ")
+  launch  = commands(:launch).map  { |s| "(\n\n#{s}\n\n)" }.join(" && ")
+  clean   = commands(:clean).map   { |s| "(\n\n#{s}\n\n)" }.join(" && ")
 %>
 #!/usr/bin/env bash
 
@@ -48,7 +48,7 @@ fi
   <%= echo_cmd %[mkdir -p "$build_path"] %> &&
   <%= echo_cmd %[cd "$build_path"] %> &&
   (
-<%= indent 4, (prepare.empty? ? "true" : prepare) %>
+<%= (prepare.empty? ? "true" : prepare) %>
   )
 ) &&
 
@@ -68,7 +68,7 @@ fi
 (
   echo "-----> Launching"
   <%= echo_cmd %[cd "$release_path"] %>
-<%= indent 2, (launch.empty? ? "true" : launch) %>
+<%= (launch.empty? ? "true" : launch) %>
 ) &&
 
 # ============================
@@ -84,7 +84,7 @@ fi
 (
   echo "! ERROR: Deploy failed."
 
-<%= indent 2, clean %>
+<%= clean %>
 
   echo "-----> Cleaning up build"
   [ -e "$build_path" ] && (
